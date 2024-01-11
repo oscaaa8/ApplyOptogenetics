@@ -1,0 +1,126 @@
+
+unsigned long previousMicros = 0;  //prev microsecond time stamp
+long ontime = 10;
+long offtime = 90;
+int ToggleSwitch = 0;  // Toggle switch is on pin 0
+int PilotLED = 1;      // Pilot LED is on pin 1
+int TTLpin = 2;        // TTL output is on pin 2
+
+// ontime inits
+int ON1 = 3;
+int ON2 = 4;
+int ON3 = 5;
+int ON4 = 6;
+int ON5 = 7;
+
+// frequency inits
+int Hz1 = 8;
+int Hz2 = 9;
+int Hz3 = 10;
+int Hz4 = 11;
+int Hz5 = 12;
+
+int count20 = 0;     //Counter Variable
+bool alloff = true;  //Is pulse on/off
+int opto = 1;        //state of toggle switch
+
+
+void setup() {                          // Setup code goes here, to run once
+  pinMode(ToggleSwitch, INPUT_PULLUP);  // Sets the Toggle switch as an input with pullup resistor
+  pinMode(PilotLED, OUTPUT);            // Sets Pilot LED as an output
+  pinMode(TTLpin, OUTPUT);              // Sets TTL pin as an output
+  pinMode(ON1, INPUT_PULLUP);
+  pinMode(ON2, INPUT_PULLUP);
+  pinMode(ON3, INPUT_PULLUP);
+  pinMode(ON4, INPUT_PULLUP);
+  pinMode(ON5, INPUT_PULLUP);
+  pinMode(Hz1, INPUT_PULLUP);
+  pinMode(Hz2, INPUT_PULLUP);
+  pinMode(Hz3, INPUT_PULLUP);
+  pinMode(Hz4, INPUT_PULLUP);
+  pinMode(Hz5, INPUT_PULLUP);
+}
+
+void loop() {        // Main code goes here, to run repeatedly
+  ontime = 1000;     // Default on-time 1 ms
+  offtime = 999000;  // Default frequency 1 Hz
+
+  int pulse = 0;
+
+  //ontime conditions
+  if (digitalRead(ON1) == LOW) {
+    ontime = 2000;
+  }  //2000 ms = 2 secs
+  if (digitalRead(ON2) == LOW) {
+    ontime = 5000;
+  }
+  if (digitalRead(ON3) == LOW) {
+    ontime = 10000;
+  }
+  if (digitalRead(ON4) == LOW) {
+    ontime = 20000;
+  }
+
+  //frequency conditions
+  if (digitalRead(Hz1) == LOW) {
+    offtime = 500000 - ontime;
+  }
+  if (digitalRead(Hz2) == LOW) {
+    offtime = 200000 - ontime;
+  }
+  if (digitalRead(Hz3) == LOW) {
+    offtime = 100000 - ontime;
+  }
+  if (digitalRead(Hz4) == LOW) {
+    offtime = 50000 - ontime;
+  }
+  if (digitalRead(Hz5) == LOW) {
+    offtime = 33333 - ontime;
+    pulse = 1;
+  }
+
+  if (digitalRead(ON5) == LOW) {
+    ontime = 1000000;
+    offtime = 1000000;
+    pulse = 0;
+  }
+
+  if (digitalRead(ToggleSwitch) == LOW) {
+    digitalWrite(PilotLED, HIGH);
+    opto = 1;
+  }
+
+  if (digitalRead(ToggleSwitch) == HIGH) {
+    digitalWrite(PilotLED, LOW);
+    opto = 0;
+  }
+
+  if (alloff == false) {
+    if (micros() - previousMicros >= ontime) {
+      digitalWrite(TTLpin, LOW);
+      alloff = true;
+      previousMicros = micros();
+      /*   if(pulse == 1){
+      count20 ++;
+      if(count20 >= 19){
+        previousMillis = previousMillis - 3000;
+        count20 = 0;
+      }
+    }  */
+    }
+  }
+
+  if (alloff == true) {
+    if (micros() - previousMicros >= offtime) {
+      if (opto == 1) {
+        digitalWrite(TTLpin, HIGH);
+        alloff = false;
+      }
+      previousMicros = micros();
+    }
+  }
+
+  if (micros() - previousMicros < 0) {
+    previousMicros = 0;
+  }
+}
