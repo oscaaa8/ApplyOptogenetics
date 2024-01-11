@@ -1,0 +1,327 @@
+int sensorPin = A0;
+int LEDpin = 10;
+int SensorValue = 0;  // The number to get from rotary
+int frq = 0;
+
+
+
+
+
+
+
+
+void setup() {
+  // put your setup code here, to run once:
+  // pinMode(LEDpin, OUTPUT);  // sets the digital pin as output
+  Serial.begin(9600);  //Choose your serial speed
+}
+
+
+
+
+
+
+
+
+int GetRot(int ResValue) {
+  int rotary;
+
+
+  //first
+  if (ResValue >= 1020 && ResValue <= 1023) {
+    rotary = 8;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  //second
+  if (ResValue >= 143 && ResValue <= 150) {
+    rotary = 1;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  //third
+  if (ResValue >= 289 && ResValue <= 294) {
+    rotary = 2;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  //fourth
+  if (ResValue >= 435 && ResValue <= 450) {
+    rotary = 3;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  //fifth
+  if (ResValue >= 580 && ResValue <= 590) {
+    rotary = 4;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  //sixth
+  if (ResValue >= 730 && ResValue <= 745) {
+    rotary = 5;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  //seventh
+  if (ResValue >= 870 && ResValue <= 880) {
+    rotary = 6;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  //eigth
+  if (ResValue >= 0 && ResValue <= 5) {
+    rotary = 7;
+    Serial.print(rotary);
+
+
+
+
+
+
+
+
+    //Serial.write("I am set to 0");
+  }
+  return rotary;
+}
+
+
+
+
+int GetFrequency(int setting) {
+  int downtime;
+  int dt1 = 1;
+  int dt2 = 20;
+  int dt3 = 50;
+  int dt4 = 80;
+  int dt5 = 100;
+  int dt6 = 150;
+  int dt7 = 200;
+  int dt8 = 300;
+
+
+
+
+  if (setting == 1) {
+    downtime = dt1;
+    Serial.println("Shift: 1");
+  }
+
+
+
+
+  if (setting == 2) {
+    downtime = dt2;
+    Serial.println("Shift: 2");
+  }
+
+
+
+
+  if (setting == 3) {
+    downtime = dt3;
+    Serial.println("Shift: 3");
+  }
+
+
+
+
+  if (setting == 4) {
+    downtime = dt4;
+    Serial.println("Shift: 4");
+  }
+
+
+
+
+  if (setting == 5) {
+    downtime = dt5;
+    Serial.println("Shift: 5");
+  }
+
+
+
+
+  if (setting == 6) {
+    downtime = dt6;
+    Serial.println("Shift: 6");
+  }
+
+
+
+
+  if (setting == 7) {
+    downtime = dt7;
+    Serial.println("Shift: 7");
+  }
+
+
+
+
+  if (setting == 8) {
+    downtime = dt8;
+    Serial.println("Shift: 8");
+  }
+
+
+
+
+  return downtime;
+}
+
+
+
+
+void loop() {  // MAIN CODE STARTS HERE
+
+
+
+
+  SensorValue = analogRead(sensorPin);  //Declares Sensor Value
+  // Serial.println(SensorValue, DEC);
+
+
+  int rotary = GetRot(SensorValue);
+  frq = GetFrequency(rotary);
+
+
+  bool button = true;
+
+
+
+
+    digitalWrite(LEDpin, HIGH);  // turns the LED on
+    delay(frq);                  //waits for frequency interval
+    digitalWrite(LEDpin, LOW);   // turns the LED ff
+    delay(frq);                  //waits for frequency interval
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // if (SensorValue == 0.0) {
+  //   frqSet = 1;
+  //   //Serial.write("I am set to 0");
+  // }
+  // if(SensorValue == 1023){
+  //   //Serial.println("I am set to 8");
+  // }
+
+
+
+
+  // else {
+  //   frqSet = 0;
+  //  // Serial.println("Undefined");
+  // }
+
+
+
+
+  // // while (frqSet == 1){
+  // // //Serial.println("On Setting");
+  // // digitalWrite(LEDpin, HIGH);  // turns the LED on
+  // // delay(downtime);             //waits for frequnecy interval
+  // // digitalWrite(LEDpin, LOW);   // turns the LED off
+  // // delay(downtime);
+  // }
+
+
+
+
+
+
+
+
+  // Serial.println("I am working");
+  //if Sensor value == 0 then frq
+  //frq = 2
+  // if frq == 2 {
+  //      donwtime = 2000
+  // The Icepick Surgeon
+
+
+
+
+
+
+
+
+  // digitalWrite(ledPin, HIGH);  // turns the LED on
+  // delay(downtime);             //waits for frequnecy interval
+  // digitalWrite(ledPin, LOW);   // turns the LED off
+  // delay(downtime);
+}
+
+
+
+
