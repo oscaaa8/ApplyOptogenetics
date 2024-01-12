@@ -1,151 +1,67 @@
-int sensorPin = A0;
+int switchPin = A0;
 int LEDpin = 10;
-int SensorValue = 0;  // The number to get from rotary
-int frq = 0;
-
-
-
-
-
-
+int SetValue = 0;  // Initializes SetValue as 0
+int frq = 0;    // Initialize frq as 0
 
 
 void setup() {
-  // put your setup code here, to run once:
-  // pinMode(LEDpin, OUTPUT);  // sets the digital pin as output
   Serial.begin(9600);  //Choose your serial speed
 }
 
+int GetRot(int ResValue) {    // This function returns a value (rotary) representative of what setting the switch is set to
+  int rotary;                 // Passes Resistance Values (ResValue) based on the physical rotary switch 
 
-
-
-
-
-
-
-int GetRot(int ResValue) {
-  int rotary;
-
-
-  //first
-  if (ResValue >= 1020 && ResValue <= 1023) {
+  if (ResValue >= 1020 && ResValue <= 1023) {     //first
     rotary = 8;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  //second
-  if (ResValue >= 143 && ResValue <= 150) {
+  
+  if (ResValue >= 143 && ResValue <= 150) {   //second
     rotary = 1;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  //third
-  if (ResValue >= 289 && ResValue <= 294) {
+  
+  if (ResValue >= 289 && ResValue <= 294) {   //third
     rotary = 2;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  //fourth
-  if (ResValue >= 435 && ResValue <= 450) {
+  
+  if (ResValue >= 435 && ResValue <= 450) {   //fourth
     rotary = 3;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  //fifth
-  if (ResValue >= 580 && ResValue <= 590) {
+  
+  if (ResValue >= 580 && ResValue <= 590) {   //fifth
     rotary = 4;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  //sixth
-  if (ResValue >= 730 && ResValue <= 745) {
+  
+  if (ResValue >= 730 && ResValue <= 745) {   //sixth
     rotary = 5;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  //seventh
-  if (ResValue >= 870 && ResValue <= 880) {
+  
+  if (ResValue >= 870 && ResValue <= 880) {   //seventh
     rotary = 6;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  //eigth
-  if (ResValue >= 0 && ResValue <= 5) {
+  
+  if (ResValue >= 0 && ResValue <= 5) {   //eighth
     rotary = 7;
     Serial.print(rotary);
-
-
-
-
-
-
-
-
     //Serial.write("I am set to 0");
   }
-  return rotary;
+  return rotary; //Integer representing of the rotary switch set which is returned
 }
 
-
-
-
-int GetFrequency(int setting) {
+int GetFrequency(int setting) {   // This function sets & returns a value (downtime) from the rotary switch (setting) that is passed into it
   int downtime;
   int dt1 = 1;
   int dt2 = 20;
@@ -155,9 +71,6 @@ int GetFrequency(int setting) {
   int dt6 = 150;
   int dt7 = 200;
   int dt8 = 300;
-
-
-
 
   if (setting == 1) {
     downtime = dt1;
@@ -221,30 +134,18 @@ int GetFrequency(int setting) {
   }
 
 
-
-
   return downtime;
 }
 
-
-
-
 void loop() {  // MAIN CODE STARTS HERE
 
+  SetValue = analogRead(switchPin);  //SetValue is the value being passed to GetRot 
+  // Serial.println(SetValue, DEC);
 
 
-
-  SensorValue = analogRead(sensorPin);  //Declares Sensor Value
-  // Serial.println(SensorValue, DEC);
-
-
-  int rotary = GetRot(SensorValue);
-  frq = GetFrequency(rotary);
-
-
+  int rotary = GetRot(SetValue);    // rotary = a 1-8 setting value determined by the resistance value read from the rotary switch
+  frq = GetFrequency(rotary);   // frq = a downtime integer --> determined by the rotary value
   bool button = true;
-
-
 
 
     digitalWrite(LEDpin, HIGH);  // turns the LED on
@@ -253,7 +154,7 @@ void loop() {  // MAIN CODE STARTS HERE
     delay(frq);                  //waits for frequency interval
  
 
-
+// To do: 1) Adjust pin values to use LED + TTL signal output   2) If button is pushed implementation activate light for 5s   3) Optogenetics Testing 
 
 
 
@@ -321,7 +222,3 @@ void loop() {  // MAIN CODE STARTS HERE
   // digitalWrite(ledPin, LOW);   // turns the LED off
   // delay(downtime);
 }
-
-
-
-
