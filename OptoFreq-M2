@@ -1,0 +1,162 @@
+int switchPin = A0;
+int LEDpin = 10;
+int SetValue = 0;  // Initializes SetValue as 0
+int frq = 0;    // Initialize frq as 0
+
+
+void setup() {
+  Serial.begin(9600);  //Choose your serial speed
+}
+
+int GetRot(int ResValue) {    // This function returns a value (rotary) representative of what setting the switch is set to
+  int rotary;                 // Passes Resistance Values (ResValue) based on the physical rotary switch 
+
+  if (ResValue >= 1020 && ResValue <= 1023) {     //first
+    rotary = 8;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  
+  if (ResValue >= 143 && ResValue <= 150) {   //second
+    rotary = 1;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  
+  if (ResValue >= 289 && ResValue <= 294) {   //third
+    rotary = 2;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  
+  if (ResValue >= 435 && ResValue <= 450) {   //fourth
+    rotary = 3;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  
+  if (ResValue >= 580 && ResValue <= 590) {   //fifth
+    rotary = 4;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  
+  if (ResValue >= 730 && ResValue <= 745) {   //sixth
+    rotary = 5;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  
+  if (ResValue >= 870 && ResValue <= 880) {   //seventh
+    rotary = 6;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  
+  if (ResValue >= 0 && ResValue <= 5) {   //eighth
+    rotary = 7;
+    Serial.print(rotary);
+    //Serial.write("I am set to 0");
+  }
+  return rotary; //Integer representing of the rotary switch set which is returned
+}
+
+int GetFrequency(int setting) {   // This function sets & returns a value (downtime) from the rotary switch (setting) that is passed into it
+  int downtime;
+  // Adjusted downtime for 10Hz, 20 Hz, 30Hz
+  int dt10 = 100;
+  int dt20 = 50;
+  int dt30 = 33;
+
+  int dt4 = (2*1000);
+  int dt5 = (3*1000);
+  int dt6 = (4*1000);
+  int dt7 = (5*1000);
+  int dt8 = (6*1000);
+
+  if (setting == 1) {
+    downtime = dt1;
+    Serial.println("Shift: 1");
+  }
+
+
+
+
+  if (setting == 2) {
+    downtime = dt2;
+    Serial.println("Shift: 2");
+  }
+
+
+
+
+  if (setting == 3) {
+    downtime = dt3;
+    Serial.println("Shift: 3");
+  }
+
+
+
+
+  if (setting == 4) {
+    downtime = dt4;
+    Serial.println("Shift: 4");
+  }
+
+
+
+
+  if (setting == 5) {
+    downtime = dt5;
+    Serial.println("Shift: 5");
+  }
+
+
+
+
+  if (setting == 6) {
+    downtime = dt6;
+    Serial.println("Shift: 6");
+  }
+
+
+
+
+  if (setting == 7) {
+    downtime = dt7;
+    Serial.println("Shift: 7");
+  }
+
+
+
+
+  if (setting == 8) {
+    downtime = dt8;
+    Serial.println("Shift: 8");
+  }
+
+
+  return downtime;
+}
+
+void loop() {  // MAIN CODE STARTS HERE
+
+  SetValue = analogRead(switchPin);  //SetValue is the value being passed to GetRot 
+  // Serial.println(SetValue, DEC);
+
+
+  int rotary = GetRot(SetValue);    // rotary = a 1-8 setting value determined by the resistance value read from the rotary switch
+  frq = GetFrequency(rotary);   // frq = a downtime integer --> determined by the rotary value
+  bool button = true;
+
+
+    digitalWrite(LEDpin, HIGH);  // turns the LED on
+    delay(frq);                  //waits for frequency interval
+    digitalWrite(LEDpin, LOW);   // turns the LED ff
+    delay(frq);                  //waits for frequency interval
+ 
+
+// To do: 1) Adjust pin values to use LED + TTL signal output   2) If button is pushed implementation activate light for 5s   3) Optogenetics Testing 
+
+
+}
