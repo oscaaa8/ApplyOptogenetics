@@ -1,0 +1,90 @@
+// This code is used as an operant condition experiment to run on an arduino.The Signal is recieved from a medpc output via a DB25 port with only a power and ground connection.
+// 
+
+int TTLSignalPin = 10;
+const int db25Pin = A1;       // Changed from 2 to A1
+const int threshold = 560;    // Example threshold for analog signal
+bool NosePoke = false;
+
+int frq = 50;
+
+
+void setup() {
+  pinMode(TTLSignalPin, OUTPUT);  // To LED
+  pinMode(db25Pin, INPUT);        // From MEDPC
+
+  Serial.begin(9600);  // Initialize serial communication
+}
+
+void PulseStim(int pin, int interval){
+  digitalWrite(pin, HIGH); // Turn the LED on
+  delay(interval);         // Wait for the interval
+  digitalWrite(pin, LOW);  // Turn the LED off
+  delay(interval);         // Wait for the interval
+}
+
+void loop() {
+  int sensorVal = analogRead(db25Pin);  // Read the analog in value
+
+  if(sensorVal >= 1 && sensorVal <= 4){ // 2 -3 range == ON
+    NosePoke = true; //ON
+  }
+  else {
+    NosePoke = false; //OFF?
+    //Serial.println(sensorVal);
+  }
+  
+  if (NosePoke == true){ //If ON
+    Serial.println("Signal Received"); // Print
+    PulseStim(TTLSignalPin, frq);
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   // Check for commands from MED-PC
+//   if (Serial.available() > 0) {
+//     char command = Serial.read();
+
+//     if (command == '1') {
+//       generatePulse();
+
+//     } else if (command == '0') {
+//       stopPulse();
+
+//     }  // Else if end
+//   }    // If available end
+// }  // Loop end
+
+
+// void generatePlus() {
+//   // Generate pulse train
+//   while (true) {
+//     digitalWrite(TTLSignalPin, HIGH);
+//     delayMicroseconds(frq);
+//     digitalWrite(TTLSignalPin, LOW);
+//     delayMicroseconds(frq);
+//   }
+// }
+
+// void stopPulse() {
+//   // Stop pulse train
+//   digitalWrite(TTLSignalPin, LOW);
+// }
+// }
